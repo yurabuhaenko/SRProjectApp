@@ -1,0 +1,124 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:focusable="true" android:focusableInTouchMode="true"
+    tools:context="denver.srprojectapp.CreateProjectActivity">
+
+    <ProgressBar android:id="@+id/save_project_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:id="@+id/scrollViewCreateProject"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
+
+    <RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editTextTitleCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:hint="Title"
+            android:textColor="#212121"
+            android:inputType="textMultiLine"/>
+
+        <EditText
+            android:id="@+id/editTextDescriptionCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextTitleCreate"
+            android:layout_centerHorizontal="true"
+            android:hint="Description"
+            android:textColor="#212121"
+            android:inputType="textMultiLine"/>
+
+        <LinearLayout
+            android:id="@+id/linLayoutButtonDatetime"
+            android:layout_below="@+id/editTextDescriptionCreate"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/textSelectDateTimeCreate"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:enabled="false"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextTitleCreate"
+                android:layout_centerHorizontal="true"
+                android:hint="@string/text_datetime_default"
+                android:textColor="#212121"
+                android:inputType="textMultiLine"/>
+
+            <Button
+                android:id="@+id/buttonDateTimeCreate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:onClick="onClickButtonDateTimeCreate"
+                android:text="@string/button_datetime_date_add"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/listViewTaskCreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/linLayoutButtonDatetime"
+            android:layout_alignParentLeft="true" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonAddNewTask"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:onClick="onClickButtonAddTask"
+            android:layout_below="@+id/listViewTaskCreate"
+            android:text="@string/button_add_task"/>
+
+
+    </RelativeLayout>
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/myFABSaveProject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/fab_plus_icon"
+        android:clickable="true"
+        app:layout_anchor="@id/scrollViewCreateProject"
+        app:layout_anchorGravity="bottom|right|end"
+        app:elevation="4dp"
+        app:borderWidth="0dp"
+        android:onClick="onClickFABSaveProject"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+
+
+</RelativeLayout>

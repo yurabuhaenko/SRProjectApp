@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/group_base_menu"
+        android:checkableBehavior="single"
+        android:visible="true">
+        <item
+            android:checked="true"
+            android:id="@+id/item_navigation_drawer_inbox_user_tasks"
+            android:icon="@drawable/ic_inbox_black_24dp"
+            android:title="My tasks" />
+        <item
+            android:id="@+id/item_navigation_drawer_projects"
+            android:icon="@drawable/ic_action_toggle_star"
+            android:title="Projects" />
+        <item
+            android:id="@+id/item_navigation_drawer_create_project"
+            android:icon="@drawable/ic_action_content_send"
+            android:title="Create project" />
+
+    </group>
+
+    <group android:id="@+id/group_full_menu"
+        android:checkableBehavior="single"
+        android:visible="true">
+        <item
+            android:id="@+id/item_navigation_drawer_create_user"
+            android:icon="@drawable/ic_inbox_black_24dp"
+            android:title="Create User" />
+
+    </group>
+
+    <group android:id="@+id/group_login"
+        android:checkableBehavior="single"
+        android:visible="true">
+        <item
+            android:id="@+id/item_navigation_drawer_login"
+            android:icon="@drawable/ic_inbox_black_24dp"
+            android:title="Login" />
+
+    </group>
+
+    <group android:id="@+id/group_app_menu"
+        android:checkableBehavior="single"
+        android:visible="true">
+
+        <item android:title="Subheader">
+            <menu>
+                <item
+                    android:id="@+id/item_navigation_drawer_settings"
+                    android:icon="@drawable/ic_action_content_mail"
+                    android:title="Settings - out" />
+                <item
+                    android:id="@+id/item_navigation_drawer_help_and_feedback"
+                    android:icon="@drawable/ic_action_action_delete"
+                    android:title="Help and feedback" />
+            </menu>
+        </item>
+    </group>
+
+</menu>

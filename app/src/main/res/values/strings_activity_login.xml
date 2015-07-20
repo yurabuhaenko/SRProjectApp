@@ -1,0 +1,21 @@
+<resources>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_name">Name</string>
+
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_up">Sign up</string>
+
+    <string name="spinner_title">Choose user rights</string>
+
+    <string name="error_invalid_user_rights">You need to choose user rights</string>
+    <string name="error_invalid_name">This field is empty or too short</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+</resources>

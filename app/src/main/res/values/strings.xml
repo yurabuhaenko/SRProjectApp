@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SR Project App</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_navigation_drawer">NavAct</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_activity_create_project">CreateProjectActivity</string>
+</resources>

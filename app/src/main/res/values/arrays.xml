@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="layers_array">
+        <item>My Tasks</item>
+        <item>Projects</item>
+
+    </string-array>
+
+    <string name="code1_code">code1_array</string>
+    <string name="code2_code">code2_array</string>
+</resources>
