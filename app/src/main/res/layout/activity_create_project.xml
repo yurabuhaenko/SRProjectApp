@@ -8,6 +8,7 @@
     android:focusable="true" android:focusableInTouchMode="true"
     tools:context="denver.srprojectapp.CreateProjectActivity">
 
+    ////
     <ProgressBar android:id="@+id/save_project_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
