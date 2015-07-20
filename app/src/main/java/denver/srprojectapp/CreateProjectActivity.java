@@ -626,7 +626,7 @@ public class CreateProjectActivity extends NavigationDrawerActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+//
                 return false;
 
             }
