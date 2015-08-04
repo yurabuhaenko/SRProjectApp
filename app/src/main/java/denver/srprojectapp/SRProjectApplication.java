@@ -12,6 +12,16 @@ import java.util.List;
  */
 public class SRProjectApplication extends Application {
 
+    ///////////////////////////
+    /// APP SETTINGS FIELDS
+    ///////////////////////////
+    private int intervalToResyncTask;
+    private int intervalToCheckUpdateTask;
+
+
+    ///////////////////////////
+    ///// USER FIELDS
+    ///////////////////////////
     private User user;
     private List<ProjectTask> userTasks;
     private List<Project> projectList;
@@ -22,6 +32,9 @@ public class SRProjectApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        loadIntervalToResyncTask();
+        loadIntervalToCheckUpdateTask();
 
         if (checkIsSavedUser() == true){
             user = loadUser();
@@ -34,8 +47,13 @@ public class SRProjectApplication extends Application {
         generalUserList = new ArrayList<>();
         userTasks = new ArrayList<>();
 
-
     }
+
+
+    public void setIntervalToResyncTask(int intervalToResyncTask){this.intervalToResyncTask = intervalToResyncTask;}
+    public void setIntervalToCheckUpdateTask(int intervalToCheckUpdateTask){this.intervalToCheckUpdateTask = intervalToCheckUpdateTask;}
+    public int getIntervalToResyncTask(){return intervalToResyncTask;}
+    public int getIntervalToCheckUpdateTask(){return intervalToCheckUpdateTask;}
 
 
     public void setUser(User user){this.user = user;}
@@ -60,6 +78,25 @@ public class SRProjectApplication extends Application {
         }
         return false;
     }
+    public Project getProjectById(int project_id){
+        Project project = new Project(0,"",0,"","",0);
+        for(int i = 0; i < projectList.size(); ++i) {
+            if (projectList.get(i).getId() == project_id) {
+                project = projectList.get(i);
+            }
+        }
+        return project;
+    }
+
+    public void rewriteProjectById(Project project){
+        for(int i = 0; i < projectList.size(); ++i){
+            if(projectList.get(i).getId() == project.getId()){
+                projectList.set(i,project);
+            }
+        }
+    }
+
+
 
 
     public void setGeneralUserList(List<GeneralUser> generalUserList){
@@ -74,16 +111,33 @@ public class SRProjectApplication extends Application {
         return false;
     }
     public List<GeneralUser> getGeneralUserList(){return generalUserList;}
+    public GeneralUser getGeneralUserById(int id){
+        GeneralUser generalUser = new GeneralUser(0,"");
+        for(int i = 0; i < generalUserList.size(); ++i){
+            if (id == generalUserList.get(i).getUserId()){generalUser = generalUserList.get(i);}
+        }
+        return generalUser;
+    }
 
+    public void setUserTasks(List<ProjectTask> userTasks){
+        this.userTasks = userTasks;
+    }
+    public List<ProjectTask> getUserTasks(){return userTasks;}
+    public boolean isUserTaskList(){
+        if (userTasks != null){
+            if(userTasks.size() > 0){
+                return true;
+            }
+        }
+        return false;
+    }
 
-
-///////////////////////////////////
-///////////////preferences saver///
-///////////////////////////////////
+////////////////////////////////////////
+///////////////USER preferences saver///
+////////////////////////////////////////
 
     private static final String PREFERENCES_USER = "userPref";
     private static final String PREFERENCES_USER_TASK_PROJECT = "userProjectTaskPref";
-
     private static final String NUMBER_SAVED_PROJECT_TASKS = "numbProjectTasks";
 
     private static final String SAVED_USER_ID = "userId";
@@ -96,7 +150,8 @@ public class SRProjectApplication extends Application {
     private static final String SAVED_TASK_TEXT = "taskText";
     private static final String SAVED_TASK_STATUS = "taskStatus";
     private static final String SAVED_TASK_PROJECT_ID = "taskProjectId";
-    private static final String SAVED_PROJECT_TITLE = "projectId";
+    private static final String SAVED_PROJECT_TITLE = "projectTitle";
+
 
 
     public void saveUser() {
@@ -148,6 +203,8 @@ public class SRProjectApplication extends Application {
         deleteUserFromSaved();;
     }
 
+
+
     public void saveUserProjectTasks(List<ProjectTask> prTasks) {
         sPref = getSharedPreferences(PREFERENCES_USER_TASK_PROJECT, MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
@@ -164,6 +221,7 @@ public class SRProjectApplication extends Application {
 
         ed.commit();
     }
+
 
     public List<ProjectTask> loadUserProjectTasks() {
         sPref = getSharedPreferences(PREFERENCES_USER_TASK_PROJECT, MODE_PRIVATE);
@@ -198,4 +256,38 @@ public class SRProjectApplication extends Application {
             return false;
         }
     }
+
+
+////////////////////////////////////////
+///////////////SYSTEM preferences saver/
+////////////////////////////////////////
+    private static final String PREFERENCES_SYSTEM = "systemPref";
+    private static final String SAVED_INTERVAL_TO_RESYNC_TASK = "systemIntervalResync";
+    private static final String SAVED_INTERVAL_TO_CHECK_UPDATE_TASK = "systemIntervalToCheckUpd";
+
+    public void saveIntervalToResyncTask() {
+        sPref = getSharedPreferences(PREFERENCES_SYSTEM, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString(SAVED_INTERVAL_TO_RESYNC_TASK, Integer.toString(this.getIntervalToResyncTask()));
+        ed.commit();
+    }
+
+    public void saveIntervalToCheckUpdateTask() {
+        sPref = getSharedPreferences(PREFERENCES_SYSTEM, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString(SAVED_INTERVAL_TO_CHECK_UPDATE_TASK, Integer.toString(this.getIntervalToCheckUpdateTask()));
+        ed.commit();
+    }
+
+    public void loadIntervalToResyncTask() {
+        sPref = getSharedPreferences(PREFERENCES_SYSTEM, MODE_PRIVATE);
+        this.intervalToResyncTask = Integer.parseInt(sPref.getString(SAVED_INTERVAL_TO_RESYNC_TASK, "600000"));
+    }
+
+    public void loadIntervalToCheckUpdateTask() {
+        sPref = getSharedPreferences(PREFERENCES_SYSTEM, MODE_PRIVATE);
+        this.intervalToCheckUpdateTask = Integer.parseInt(sPref.getString(SAVED_INTERVAL_TO_CHECK_UPDATE_TASK, "600000"));
+    }
+
+
 }

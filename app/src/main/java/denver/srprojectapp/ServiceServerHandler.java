@@ -105,16 +105,30 @@ public class ServiceServerHandler {
                 }
 
                 if (params != null) {
-                    String paramString = URLEncodedUtils
-                            .format(params, "utf-8");
-                    url += "?" + paramString;
+                    httpPut.setEntity(new UrlEncodedFormEntity(params));
                 }
 
 
                 httpResponse = httpClient.execute(httpPut);
 
             }
+            else if (method == DELETE) {
+                // appending params to url
+                HttpDelete httpDelete = new HttpDelete(url);
+                if (apiKey != null){
+                    httpDelete.setHeader("Authorization", apiKey);
+                }
 
+                if (params != null) {
+                    String paramString = URLEncodedUtils
+                            .format(params, "utf-8");
+                    url += "?" + paramString;
+                }
+
+
+                httpResponse = httpClient.execute(httpDelete);
+
+            }
 
 
 

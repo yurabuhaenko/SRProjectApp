@@ -6,4 +6,15 @@
     <string name="title_activity_navigation_drawer">NavAct</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_create_project">CreateProjectActivity</string>
+    <string name="title_activity_edit_project">EditProjectActivity</string>
+    <string name="title_activity_user_task">UserTaskActivity</string>
+
+
+    <string name="no_internet_connection_error">You have no internet connection</string>
+    <string name="unable_to_save_changes_on_server_error">This changes will be saved on server lately</string>
+
+    <string name="notify">Notification</string>
+    <string name="notifyTaskSuccess">All your tasks was successfully loaded</string>
+
+
 </resources>

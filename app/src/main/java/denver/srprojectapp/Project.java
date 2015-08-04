@@ -25,7 +25,7 @@ public class Project {
     private String datetime;
     private int createdByID;
 
-    private List<TaskWithUsersSetted> taskList;
+    private List<TaskWithUsersSetted> taskWithUsersSettedList;
 
     Project(int id, String title, int status, String description, String datetime, int createdByID){
         this.id = id;
@@ -39,7 +39,7 @@ public class Project {
 
         this.createdByID = createdByID;
 
-        this.taskList = new ArrayList<>();
+        this.taskWithUsersSettedList = new ArrayList<>();
     }
 
     Project(int id, String title, int status, String description, String datetime, int createdByID, List<TaskWithUsersSetted> taskList ){
@@ -54,9 +54,9 @@ public class Project {
 
         this.createdByID = createdByID;
 
-        this.taskList = new ArrayList<>();
+        this.taskWithUsersSettedList = new ArrayList<>();
 
-        this.taskList = taskList;
+        this.taskWithUsersSettedList = taskList;
     }
 
 
@@ -96,8 +96,8 @@ public class Project {
 
     public int getCreatedByID(){return createdByID;}
 
-    public TaskWithUsersSetted getTaskById(int id){ return taskList.get(id); }
-    public List<TaskWithUsersSetted> getTaskList(){ return taskList; }
+    public TaskWithUsersSetted getTaskById(int id){ return taskWithUsersSettedList.get(id); }
+    public List<TaskWithUsersSetted> getTaskWithUsersSettedList(){ return taskWithUsersSettedList; }
 
 
     public void setTitle(String title){ this.title = title; }
@@ -112,10 +112,10 @@ public class Project {
     }
 
 
-    public void setTaskList(List<TaskWithUsersSetted> tl){ taskList = tl; }
+    public void setTaskList(List<TaskWithUsersSetted> tl){ taskWithUsersSettedList = tl; }
 
-    public void addTaskToList(TaskWithUsersSetted task){ taskList.add(task); }
-    public int getNumberOfTasks(){return taskList.size();}
+    public void addTaskToList(TaskWithUsersSetted task){ taskWithUsersSettedList.add(task); }
+    public int getNumberOfTasks(){return taskWithUsersSettedList.size();}
 
 
 }

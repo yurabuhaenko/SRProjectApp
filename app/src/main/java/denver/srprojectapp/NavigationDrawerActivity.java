@@ -181,7 +181,20 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupNavigationDrawerContent(NavigationView navigationView) {
+
+
+    public void setMenuItemChecked(int id){
+        for(int i = 0; i < navigationView.getMenu().size(); ++i) {
+            if(navigationView.getMenu().getItem(i).getItemId()==id){
+                navigationView.getMenu().getItem(i).setChecked(true);
+            }else{
+                navigationView.getMenu().getItem(i).setChecked(false);
+            }
+        }
+    }
+
+
+    private void setupNavigationDrawerContent(final NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -189,39 +202,52 @@ public class NavigationDrawerActivity extends AppCompatActivity {
                        // textView = (TextView) findViewById(R.id.textView);
                         Intent intent;
                         switch (menuItem.getItemId()) {
+
                             case R.id.item_navigation_drawer_inbox_user_tasks:
-                                menuItem.setChecked(true);
-                                intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
+                                intent = new Intent(NavigationDrawerActivity.this, UserTaskActivity.class);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 startActivity(intent);
                                 return true;
+
 
                             case R.id.item_navigation_drawer_projects:
-                                menuItem.setChecked(true);
+                                //setMenuItemChecked(menuItem.getItemId());
+                                intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
                                 drawerLayout.closeDrawer(GravityCompat.START);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
                                 return true;
 
+           ///////create project
                             case R.id.item_navigation_drawer_create_project:
-                                menuItem.setChecked(true);
-                                drawerLayout.closeDrawer(GravityCompat.START);
-                                return true;
-
-                            case R.id.item_navigation_drawer_login:
-                                menuItem.setChecked(true);
-                                intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
+                                //setMenuItemChecked(menuItem.getItemId());
+                                intent = new Intent(NavigationDrawerActivity.this, CreateProjectActivity.class);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 startActivity(intent);
                                 return true;
 
+           ///////login
+                            case R.id.item_navigation_drawer_login:
+                                //setMenuItemChecked(menuItem.getItemId());
+                                intent = new Intent(NavigationDrawerActivity.this, LoginActivity.class);
+                                drawerLayout.closeDrawer(GravityCompat.START);
+
+                                startActivity(intent);
+                                return true;
+
+           //////create user
                             case R.id.item_navigation_drawer_create_user:
-                                menuItem.setChecked(true);
+                                ///setMenuItemChecked(menuItem.getItemId());
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 Intent intent1 = new Intent(NavigationDrawerActivity.this, RegistrationActivity.class);
                                 startActivity(intent1);
                                 return true;
 
+
+             //////settings - SIGN OUT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                             case R.id.item_navigation_drawer_settings:
-                                menuItem.setChecked(true);
+                                //setMenuItemChecked(menuItem.getItemId());
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 onClickSignOut();
                                 return true;

@@ -156,9 +156,15 @@ package denver.srprojectapp;
             } else {
                 // Show a progress spinner, and kick off a background task to
                 // perform the user login attempt.
-                showProgress(true);
-                mAuthTask = new UserLoginTask(email, password);
-                mAuthTask.execute((Void) null);
+                if(InternetConnectionChecker.isNetworkConnected(LoginActivity.this)) {
+                    showProgress(true);
+                    mAuthTask = new UserLoginTask(email, password);
+                    mAuthTask.execute((Void) null);
+                }else{
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.no_internet_connection_error), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         }
 

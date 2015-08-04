@@ -44,18 +44,16 @@
         android:checkableBehavior="single"
         android:visible="true">
 
-        <item android:title="Subheader">
-            <menu>
-                <item
-                    android:id="@+id/item_navigation_drawer_settings"
-                    android:icon="@drawable/ic_action_content_mail"
-                    android:title="Settings - out" />
-                <item
-                    android:id="@+id/item_navigation_drawer_help_and_feedback"
-                    android:icon="@drawable/ic_action_action_delete"
-                    android:title="Help and feedback" />
-            </menu>
-        </item>
+
+        <item
+           android:id="@+id/item_navigation_drawer_settings"
+           android:icon="@drawable/ic_action_content_mail"
+           android:title="Settings - out" />
+        <item
+           android:id="@+id/item_navigation_drawer_help_and_feedback"
+           android:icon="@drawable/ic_action_action_delete"
+           android:title="Help and feedback" />
+
     </group>
 
 </menu>

@@ -197,15 +197,17 @@ public class RegistrationActivity extends NavigationDrawerActivity implements Lo
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password, name ,rights);
-            mAuthTask.execute((Void) null);
+            if(InternetConnectionChecker.isNetworkConnected(RegistrationActivity.this)) {
+                showProgress(true);
+                mAuthTask = new UserLoginTask(email, password, name ,rights);
+                mAuthTask.execute((Void) null);
+            }else{
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.no_internet_connection_error), Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
     }
 

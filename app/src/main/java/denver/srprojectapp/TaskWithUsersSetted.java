@@ -11,9 +11,13 @@ public class TaskWithUsersSetted{
     List<GeneralUser> listUsers;
 
     TaskWithUsersSetted(){
-        task.setText("");
-        task.setStatus(0);
+        task = new Task(0,"",0,0,0);
         listUsers = new ArrayList<>();
+    }
+
+    TaskWithUsersSetted(Task task, List<GeneralUser> listUsers){
+        this.task = new Task(task.getId(), task.getText(), task.getStatus(), task.getCreatedById(),task.getProjectId());
+        this.listUsers = new ArrayList<>(listUsers);
     }
 
     public String getTaskText(){return task.getText();}

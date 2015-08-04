@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <integer name="delayToFirstTimerLaunch">60000</integer>
+
+    <integer-array name="IntervalsToRetryServerConnect">
+        <item>60000</item>
+        <item>300000</item>
+        <item>600000</item>
+        <item>1800000</item>
+    </integer-array>
+
+    <integer-array name="IntervalsToCheckUpdateTask">
+        <item>300000</item>
+        <item>600000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>10800000</item>
+        <item>21600000</item>
+        <item>43200000</item>
+    </integer-array>
+
+</resources>
