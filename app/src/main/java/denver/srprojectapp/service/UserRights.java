@@ -1,4 +1,4 @@
-package denver.srprojectapp;
+package denver.srprojectapp.service;
 
 /**
  * Created by Denver on 11.07.2015.
@@ -11,7 +11,7 @@ public class UserRights {
 
     private final String rights;
 
-    UserRights(String rights){
+    public UserRights(String rights){
         if(rights.equals(FULL_RIGHTS) || rights.equals(BASE_RIGHTS) || rights.equals(VIEW_RIGHTS) ){
             this.rights = rights;
         }else{

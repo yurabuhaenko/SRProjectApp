@@ -1,35 +1,36 @@
-package denver.srprojectapp;
+package denver.srprojectapp.activitys;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import denver.srprojectapp.services.DelayedSendingToServerIntentService;
+import denver.srprojectapp.service.InternetConnectionChecker;
+import denver.srprojectapp.objects.ProjectTask;
+import denver.srprojectapp.R;
+import denver.srprojectapp.service.SRProjectApplication;
+import denver.srprojectapp.service.ServiceServerHandler;
+import denver.srprojectapp.service.UrlHolder;
 
 
 public class UserTaskActivity extends NavigationDrawerActivity {
@@ -84,8 +85,8 @@ public class UserTaskActivity extends NavigationDrawerActivity {
         List<ProjectTask> userTasks;
 
         public MyAdapter(List<ProjectTask> userTasks) {
-            mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+            mInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            this.userTasks = userTasks;
             notifyDataSetChanged();
         }
 

@@ -14,7 +14,7 @@
     <string name="unable_to_save_changes_on_server_error">This changes will be saved on server lately</string>
 
     <string name="notify">Notification</string>
-    <string name="notifyTaskSuccess">All your tasks was successfully loaded</string>
-
+    <string name="notifySuccessAllTasksLoaded">All your tasks was successfully loaded</string>
+    <string name="notifySuccessNewTasks">You got new task</string>
 
 </resources>

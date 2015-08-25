@@ -1,4 +1,4 @@
-package denver.srprojectapp;
+package denver.srprojectapp.service;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import denver.srprojectapp.R;
+import denver.srprojectapp.objects.Project;
 
 /**
  * Created by Denver on 15.07.2015.

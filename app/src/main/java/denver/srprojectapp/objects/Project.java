@@ -1,6 +1,5 @@
-package denver.srprojectapp;
+package denver.srprojectapp.objects;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class Project {
 
     private List<TaskWithUsersSetted> taskWithUsersSettedList;
 
-    Project(int id, String title, int status, String description, String datetime, int createdByID){
+    public Project(int id, String title, int status, String description, String datetime, int createdByID){
         this.id = id;
         this.title = title;
         if (status == STATUS_DONE || status == STATUS_UNDONE){
@@ -42,7 +41,7 @@ public class Project {
         this.taskWithUsersSettedList = new ArrayList<>();
     }
 
-    Project(int id, String title, int status, String description, String datetime, int createdByID, List<TaskWithUsersSetted> taskList ){
+    public Project(int id, String title, int status, String description, String datetime, int createdByID, List<TaskWithUsersSetted> taskList){
         this.id = id;
         this.title = title;
         if (status == STATUS_DONE || status == STATUS_UNDONE){

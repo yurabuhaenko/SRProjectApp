@@ -1,4 +1,4 @@
-package denver.srprojectapp;
+package denver.srprojectapp.service;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

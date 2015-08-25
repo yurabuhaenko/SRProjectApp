@@ -1,4 +1,4 @@
-package denver.srprojectapp;
+package denver.srprojectapp.service;
 
 import android.content.Intent;
 
@@ -44,7 +44,9 @@ public static String getProjectWithTaskAndUserTaskUrl(){return url + "/sr_app/v1
         return url + "/sr_app/v1/tasks/"+ Integer.toString(Id);
     }
 
-
+    public static String getUserTaskVersionUrl(){
+        return url + "/user_task_version";
+    }
 
 
 

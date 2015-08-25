@@ -1,33 +1,38 @@
-package denver.srprojectapp;
+package denver.srprojectapp.activitys;
 
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import denver.srprojectapp.objects.GeneralUser;
+import denver.srprojectapp.service.InternetConnectionChecker;
+import denver.srprojectapp.objects.Project;
+import denver.srprojectapp.service.ProjectListAdapter;
+import denver.srprojectapp.R;
+import denver.srprojectapp.service.SRProjectApplication;
+import denver.srprojectapp.service.ServiceServerHandler;
+import denver.srprojectapp.objects.Task;
+import denver.srprojectapp.objects.TaskWithUsersSetted;
+import denver.srprojectapp.service.UrlHolder;
 
 
 public class MainActivity extends NavigationDrawerActivity {

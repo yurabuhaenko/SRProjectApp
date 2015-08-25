@@ -1,4 +1,4 @@
-package denver.srprojectapp;
+package denver.srprojectapp.activitys;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -37,74 +37,80 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import denver.srprojectapp.objects.GeneralUser;
+import denver.srprojectapp.service.InternetConnectionChecker;
+import denver.srprojectapp.objects.Project;
+import denver.srprojectapp.R;
+import denver.srprojectapp.service.SRProjectApplication;
+import denver.srprojectapp.service.ServiceServerHandler;
+import denver.srprojectapp.objects.TaskWithUsersSetted;
+import denver.srprojectapp.service.UrlHolder;
 
-public class EditProjectActivity extends NavigationDrawerActivity {
+
+public class CreateProjectActivity extends NavigationDrawerActivity {
 
     private Date datetime;
-    private List<GeneralUser> allGeneralUsers;
-    List<TaskWithUsersSetted> taskWithUsersSettedList;
-
-
-
-
-    Button buttonDateTimeEdit;
-    EditText textSelectDateTimeEdit;
+    Button buttonDateTimeCreate;
+    EditText textSelectDateTimeCreate;
     SimpleDateFormat formatter;
 
+
+    private List<GeneralUser> allGeneralUsers;
 
     boolean[] mCheckedItemsArr;
     List<boolean[]> allCheckedUsersOnTasksList;
 
 
+    List<TaskWithUsersSetted> taskWithUsersSettedList;
+
+
     private LinearLayout myList;
     private MyAdapter myAdapter;
 
-    private View mProgressSaveEditedProjectView;
-    private View mEditProjectView;
-    private Project thisEditebleProject;
+    private View mProgressSaveProjectView;
+    private View mCreateProjectView;
 
-    private EditText editTextEnterTitleEdit;
-    private EditText editTextEnterDescriptionEdit;
+
+    private EditText editTextEnterTitleCreate;
+    private EditText editTextEnterDescriptionCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_project);
+        setContentView(R.layout.activity_create_project);
 
         srProjectApplication = ((SRProjectApplication) getApplicationContext());
-        postCreate(savedInstanceState,R.layout.activity_edit_project);
+        postCreate(savedInstanceState,R.layout.activity_create_project);
         /////////////
-        int project_id = getIntent().getIntExtra("project_id", 0 );
 
-
-
-        myList = (LinearLayout) findViewById(R.id.listViewTaskEdit);
-        // myList.setItemsCanFocus(true);
-        editTextEnterTitleEdit = (EditText) findViewById(R.id.editTextTitleEdit);
-        editTextEnterDescriptionEdit = (EditText) findViewById(R.id.editTextDescriptionEdit);
-        datetime = new Date();
-        buttonDateTimeEdit = (Button)findViewById(R.id.buttonDateTimeEdit);
-        textSelectDateTimeEdit = (EditText)findViewById(R.id.textSelectDateTimeEdit);
-        mProgressSaveEditedProjectView = findViewById(R.id.save_project_progress_on_edit_project);
-        mEditProjectView = findViewById(R.id.scrollViewEditProject);
-        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
-
-        thisEditebleProject = srProjectApplication.getProjectById(project_id);
-
-        editTextEnterTitleEdit.setText(thisEditebleProject.getTitle());
-        editTextEnterDescriptionEdit.setText(thisEditebleProject.getDescription());
-        datetime = new Date();
-        datetime = thisEditebleProject.getDatetimeInDate();
-        setDatetimeOnView();
-        
         taskWithUsersSettedList = new ArrayList<>();
-        if(thisEditebleProject.getNumberOfTasks() != 0) {
-            taskWithUsersSettedList = thisEditebleProject.getTaskWithUsersSettedList();
-        }
 
+        myList = (LinearLayout) findViewById(R.id.listViewTaskCreate);
+       // myList.setItemsCanFocus(true);
         setAdapterForListView();
         allGeneralUsers = new ArrayList<>();
 
+        editTextEnterTitleCreate = (EditText) findViewById(R.id.editTextTitleCreate);
+        editTextEnterDescriptionCreate = (EditText) findViewById(R.id.editTextDescriptionCreate);
+
+/////////test
+/*
+        allGeneralUsers.add(new GeneralUser(0,"00"));
+        allGeneralUsers.add(new GeneralUser(1,"11"));
+        allGeneralUsers.add(new GeneralUser(2,"22"));
+        allGeneralUsers.add(new GeneralUser(3,"33"));
+        allGeneralUsers.add(new GeneralUser(4,"44"));*/
+        ///////////
+        mProgressSaveProjectView = findViewById(R.id.save_project_progress);
+        mCreateProjectView = findViewById(R.id.scrollViewCreateProject);
+
+        datetime = new Date();
+        buttonDateTimeCreate = (Button)findViewById(R.id.buttonDateTimeCreate);
+        textSelectDateTimeCreate = (EditText)findViewById(R.id.textSelectDateTimeCreate);
+
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK);
+        datetime = new Date();
+        setDatetimeFromString("0001-01-01 00:00:00");
 
 
         if(srProjectApplication.isGeneralUserList() == true) {
@@ -114,30 +120,11 @@ public class EditProjectActivity extends NavigationDrawerActivity {
 
 
         allCheckedUsersOnTasksList = new ArrayList<>();
-
-        for(int j = 0; j < thisEditebleProject.getTaskWithUsersSettedList().size(); ++j) {
-
-            mCheckedItemsArr = new boolean[allGeneralUsers.size()];
-
-            for (int i = 0; i < mCheckedItemsArr.length; i++) {
-                boolean flagIsChecked = false;
-                for(int k = 0; k < thisEditebleProject.getTaskWithUsersSettedList().get(j).getListUsers().size(); ++k) {
-                    if (allGeneralUsers.get(i).getUserId() == thisEditebleProject.getTaskWithUsersSettedList().get(j).getListUsers().get(k).getUserId()){
-                        mCheckedItemsArr[i] = true;
-                        flagIsChecked = true;
-                        break;
-                    }
-                }
-                if(flagIsChecked == false) {
-                    mCheckedItemsArr[i] = false;
-                }
-            }
-            allCheckedUsersOnTasksList.add(mCheckedItemsArr.clone());
-            mCheckedItemsArr = new boolean[allGeneralUsers.size()];
-            for(int i = 0; i < mCheckedItemsArr.length; i++){
-                mCheckedItemsArr[i] = false;
-            }
+        mCheckedItemsArr = new boolean[allGeneralUsers.size()];
+        for(int i = 0; i < mCheckedItemsArr.length; i++){
+            mCheckedItemsArr[i] = false;
         }
+       // allCheckedUsersOnTasksList.add(mCheckedItemsArr.clone());
 
     }
 
@@ -154,12 +141,12 @@ public class EditProjectActivity extends NavigationDrawerActivity {
     }
     private void setDatetimeOnView(){
         if (isSetDatetime() == true){
-            textSelectDateTimeEdit.setText(getDatetimeInString());
-            buttonDateTimeEdit.setText(getString(R.string.button_datetime_date_delete));
+            textSelectDateTimeCreate.setText(getDatetimeInString());
+            buttonDateTimeCreate.setText(getString(R.string.button_datetime_date_delete));
         }
         else{
-            textSelectDateTimeEdit.setText("");
-            buttonDateTimeEdit.setText(getString(R.string.button_datetime_date_add));
+            textSelectDateTimeCreate.setText("");
+            buttonDateTimeCreate.setText(getString(R.string.button_datetime_date_add));
         }
     }
     private boolean isSetDatetime() {
@@ -170,7 +157,7 @@ public class EditProjectActivity extends NavigationDrawerActivity {
         }
     }
 
-    public void onClickButtonDateTimeEdit(View view){
+    public void onClickButtonDateTimeCreate(View view){
         if(isSetDatetime() == false){
             makeDateTimeDialog();
 
@@ -202,29 +189,19 @@ public class EditProjectActivity extends NavigationDrawerActivity {
 
 
     public void onClickDeleteTask(int position){
-        //taskUsersSetedList.remove(number);
-        if(taskWithUsersSettedList.get(position).getTask().getId() != 0){
-            if(InternetConnectionChecker.isNetworkConnected(EditProjectActivity.this)){
-                DeleteExistingProjectTask mAuthTask = new DeleteExistingProjectTask(taskWithUsersSettedList.get(position));
-                mAuthTask.execute((Void) null);
-            }else{
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        getResources().getString(R.string.no_internet_connection_error), Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        }
+       //taskUsersSetedList.remove(number);
+
         taskWithUsersSettedList.remove(position);
         allCheckedUsersOnTasksList.remove(position);
         setAdapterForListView();
     }
 
-    public void onClickButtonAddTaskEdit(View view){
+    public void onClickButtonAddTask(View view){
         taskWithUsersSettedList.add(new TaskWithUsersSetted());
         allCheckedUsersOnTasksList.add(mCheckedItemsArr.clone());
         setAdapterForListView();
 
     }
-
 
 
 
@@ -242,7 +219,7 @@ public class EditProjectActivity extends NavigationDrawerActivity {
         }
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditProjectActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateProjectActivity.this);
         builder.setTitle("Set users")
                 .setCancelable(false)
 
@@ -262,7 +239,7 @@ public class EditProjectActivity extends NavigationDrawerActivity {
                             public void onClick(DialogInterface dialog,
                                                 int id) {
 
-                                for (int i = 0; i < allGeneralUsers.size(); ++i) {
+                                for (int i = 0; i < mCheckedItems.length; ++i) {
                                     if (mCheckedItems[i] == true) {
                                         tmpForItemChosenGeneralUsers.add(new GeneralUser(allGeneralUsers.get(i)));
                                     }
@@ -289,7 +266,7 @@ public class EditProjectActivity extends NavigationDrawerActivity {
 
 
 
-    ////////////////////adapter and class for content
+////////////////////adapter and class for content
     public class MyAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
         //public List<Task> tasks = new ArrayList();
@@ -343,7 +320,7 @@ public class EditProjectActivity extends NavigationDrawerActivity {
                 deleteThisTask.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         wasItemDeletedInListView[0] = true;
-                        // editText.clearFocus();
+                       // editText.clearFocus();
                         editText.requestFocus();
                         onClickDeleteTask(position);
 
@@ -388,7 +365,7 @@ public class EditProjectActivity extends NavigationDrawerActivity {
 
 
 
-    ////////////////date time pickers
+   ////////////////date time pickers
 
     private int year;
     private int monthOfYear;
@@ -462,9 +439,9 @@ public class EditProjectActivity extends NavigationDrawerActivity {
     ///////////////////////////////////////
 
 
-    public void onClickFABSaveEditedProject(View view){
-        textSelectDateTimeEdit.requestFocus();
-        textSelectDateTimeEdit.clearFocus();
+    public void onClickFABSaveProject(View view){
+        textSelectDateTimeCreate.requestFocus();
+        textSelectDateTimeCreate.clearFocus();
 
 
         boolean cancel = false;
@@ -481,25 +458,24 @@ public class EditProjectActivity extends NavigationDrawerActivity {
             }
         }
 
-        if(editTextEnterDescriptionEdit.getText().length() < 15){
-            editTextEnterDescriptionEdit.setError("Description can not be shorter than 15 symbols");
-            editTextEnterDescriptionEdit.requestFocus();
+        if(editTextEnterDescriptionCreate.getText().length() < 15){
+            editTextEnterDescriptionCreate.setError("Description can not be shorter than 15 symbols");
+            editTextEnterDescriptionCreate.requestFocus();
             cancel = true;
         }
 
-        if(editTextEnterTitleEdit.getText().length() < 10){
-            editTextEnterTitleEdit.setError("Title can not be shorter than 10 symbols");
-            editTextEnterTitleEdit.requestFocus();
+        if(editTextEnterTitleCreate.getText().length() < 10){
+            editTextEnterTitleCreate.setError("Title can not be shorter than 10 symbols");
+            editTextEnterTitleCreate.requestFocus();
             cancel = true;
         }
 
 
         if (!cancel) {
-
-            if(InternetConnectionChecker.isNetworkConnected(EditProjectActivity.this)) {
+            if(InternetConnectionChecker.isNetworkConnected(CreateProjectActivity.this)) {
                 showProgress(true);
-                SaveProjectTask mAuthTask = new SaveProjectTask(editTextEnterTitleEdit.getText().toString(),
-                        editTextEnterDescriptionEdit.getText().toString(), getDatetimeInString(), 0, taskWithUsersSettedList);
+                SaveProjectTask mAuthTask = new SaveProjectTask(editTextEnterTitleCreate.getText().toString(),
+                        editTextEnterDescriptionCreate.getText().toString(), getDatetimeInString(),  taskWithUsersSettedList);
                 mAuthTask.execute((Void) null);
             }else{
                 Toast toast = Toast.makeText(getApplicationContext(),
@@ -509,7 +485,6 @@ public class EditProjectActivity extends NavigationDrawerActivity {
         }
     }
 
-
     public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -517,28 +492,28 @@ public class EditProjectActivity extends NavigationDrawerActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mEditProjectView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mEditProjectView.animate().setDuration(shortAnimTime).alpha(
+            mCreateProjectView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mCreateProjectView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mEditProjectView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mCreateProjectView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
-            mProgressSaveEditedProjectView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressSaveEditedProjectView.animate().setDuration(shortAnimTime).alpha(
+            mProgressSaveProjectView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressSaveProjectView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressSaveEditedProjectView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    mProgressSaveProjectView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            mProgressSaveEditedProjectView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mEditProjectView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mProgressSaveProjectView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mCreateProjectView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -549,18 +524,16 @@ public class EditProjectActivity extends NavigationDrawerActivity {
         private final String mTitle;
         private final String mDescription;
         private final String mDatetime;
-        private final int mStatus;
         private final List<TaskWithUsersSetted> mTaskWithUsersSettedList;
 
         ///
         private String mError;
         ///
 
-        SaveProjectTask(String title, String description, String datetime,int status,List<TaskWithUsersSetted> taskUsersSetedList) {
+        SaveProjectTask(String title, String description, String datetime, List<TaskWithUsersSetted> taskUsersSetedList) {
             mTitle = title;
             mDescription = description;
             mDatetime =  datetime;
-            mStatus = status;
             mTaskWithUsersSettedList = taskUsersSetedList;
         }
 
@@ -574,12 +547,15 @@ public class EditProjectActivity extends NavigationDrawerActivity {
             // Making a request to url and getting response
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
             pairs.add(new BasicNameValuePair("title", mTitle));
-            pairs.add(new BasicNameValuePair("status", Integer.toString(mStatus)));
             pairs.add(new BasicNameValuePair("description", mDescription));
             pairs.add(new BasicNameValuePair("datetime", mDatetime));
+            /*
+            JSONArray arr = new JSONArray();
+            arr.put(new BasicNameValuePair("id","111"));
+            arr.put(new BasicNameValuePair("id", "222"));
+            String str = arr.toString();*/
 
-
-            String jsonStr = sh.makeServiceCall(UrlHolder.getProjectUrlById(thisEditebleProject.getId()), ServiceServerHandler.PUT, pairs, srProjectApplication.getUser().getUserApiKey() );
+            String jsonStr = sh.makeServiceCall(UrlHolder.getProjectUrl(), ServiceServerHandler.POST, pairs, srProjectApplication.getUser().getUserApiKey() );
 
             if (jsonStr != null) {
 
@@ -589,126 +565,83 @@ public class EditProjectActivity extends NavigationDrawerActivity {
                     jsonObj = new JSONObject(jsonStr);
                     error = jsonObj.getString(ServiceServerHandler.TAG_ERROR);
 
-
-                        //boolean[] isTaskFromExisting = new boolean[mTaskWithUsersSettedList.size()];
-                        //isTaskFromExisting = srProjectApplication.compareTaskWithUserSettedWithExisting(mTaskWithUsersSettedList,thisEditebleProject.getId());
+                    if (error == "false") {
+                        int project_id = Integer.parseInt(jsonObj.getString("project_id"));
 
                         for(int i = 0; i < mTaskWithUsersSettedList.size(); ++i) {
-                            if(mTaskWithUsersSettedList.get(i).getTask().getId() != 0) { ///// update task
-                                if(mTaskWithUsersSettedList.get(i).getListUsers().size() > 0) {
-                                    updateTaskOnServer( UrlHolder.getTasksWithUserTaskUrl() ,
-                                            mTaskWithUsersSettedList.get(i));
-                                }else{
-                                    updateTaskOnServer( UrlHolder.getTasksUrl(), mTaskWithUsersSettedList.get(i));
+                            if (mTaskWithUsersSettedList.get(i).getListUsers().size() > 0) {
+                                List<NameValuePair> pairsTasks = new ArrayList<NameValuePair>();
+                                pairsTasks.add(new BasicNameValuePair("text", mTaskWithUsersSettedList.get(i).getTaskText()));
+                                pairsTasks.add(new BasicNameValuePair("project_id", Integer.toString(project_id)));
+
+                                JSONArray arr = new JSONArray();
+                                for (int j = 0; j < mTaskWithUsersSettedList.get(i).getListUsers().size(); ++j){
+                                    JSONObject objectUs = new JSONObject();
+                                    objectUs.put("id",Integer.toString(mTaskWithUsersSettedList.get(i).getListUsers().get(j).getUserId()));
+                                    arr.put(objectUs);
                                 }
-                            }else{    ///////////////////create task
-                                if(mTaskWithUsersSettedList.get(i).getListUsers().size() > 0) {
-                                    createNewTaskOnServer(UrlHolder.getTasksWithUserTaskUrl(), mTaskWithUsersSettedList.get(i));
-                                }else{
-                                    createNewTaskOnServer(UrlHolder.getTasksUrl(), mTaskWithUsersSettedList.get(i));
+                                JSONObject object = new JSONObject();
+                                object.put("arrUsersId",arr);
+
+                                pairsTasks.add(new BasicNameValuePair("users", object.toString()));
+                                jsonStr = null;
+                                jsonStr = sh.makeServiceCall(UrlHolder.getTasksWithUserTaskUrl(), ServiceServerHandler.POST, pairsTasks, srProjectApplication.getUser().getUserApiKey() );
+                                if(jsonStr != null){
+                                    jsonObj = null;
+                                    error = "";
+                                    jsonObj = new JSONObject(jsonStr);
+                                    error = jsonObj.getString(ServiceServerHandler.TAG_ERROR);
+
+                                    if (error == "false") {
+                                        int taskId = Integer.parseInt(jsonObj.getString("task_id"));
+                                        mTaskWithUsersSettedList.get(i).setIdTask(taskId);
+
+                                    } else {
+                                        mError = jsonObj.getString("message");
+                                    }
+                                }
+                            }else{
+                                List<NameValuePair> pairsTasks = new ArrayList<NameValuePair>();
+                                pairsTasks.add(new BasicNameValuePair("text", mTaskWithUsersSettedList.get(i).getTaskText()));
+                                pairsTasks.add(new BasicNameValuePair("project_id", Integer.toString(project_id)));
+                                jsonStr = null;
+                                jsonStr = sh.makeServiceCall(UrlHolder.getTasksUrl(), ServiceServerHandler.POST, pairsTasks, srProjectApplication.getUser().getUserApiKey() );
+                                if(jsonStr != null){
+                                    jsonObj = null;
+                                    error = "";
+                                    jsonObj = new JSONObject(jsonStr);
+                                    error = jsonObj.getString(ServiceServerHandler.TAG_ERROR);
+
+                                    if (error == "false") {
+                                        int id = Integer.parseInt(jsonObj.getString("id"));
+                                        mTaskWithUsersSettedList.get(i).setIdTask(id);
+
+                                    } else {
+                                        mError = jsonObj.getString("message");
+                                    }
                                 }
                             }
+
                         }
                         ////save project to application
-                        srProjectApplication.rewriteProjectById(new Project(thisEditebleProject.getId(), mTitle, mStatus , mDescription, mDatetime,
-                                thisEditebleProject.getCreatedByID(), mTaskWithUsersSettedList ));
-
+                        srProjectApplication.getProjectList().add(new Project(project_id, mTitle, 0 , mDescription, mDatetime,
+                                srProjectApplication.getUser().getUserId(), mTaskWithUsersSettedList ));
                         return true;
 
-
+                    } else {
+                        mError = jsonObj.getString("message");
+                        /*Toast toast = Toast.makeText(getApplicationContext(),
+                                jsonObj.getString(ServerApplication.TAG_ERROR), Toast.LENGTH_LONG);
+                        toast.show();*/
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+//
                 return false;
+
             }
             return false;
-        }
-
-        private void createNewTaskOnServer(String url, TaskWithUsersSetted mTaskWithUsersSetted){
-            try {
-            List<NameValuePair> pairsTasks = new ArrayList<NameValuePair>();
-            ServiceServerHandler sh = new ServiceServerHandler();
-            pairsTasks.add(new BasicNameValuePair("text", mTaskWithUsersSetted.getTaskText()));
-            pairsTasks.add(new BasicNameValuePair("project_id", Integer.toString(thisEditebleProject.getId())));
-
-            if(mTaskWithUsersSetted.getListUsers().size() > 0){
-                JSONArray arr = new JSONArray();
-                for (int j = 0; j < mTaskWithUsersSetted.getListUsers().size(); ++j){
-                    JSONObject objectUs = new JSONObject();
-                    objectUs.put("id",Integer.toString(mTaskWithUsersSetted.getListUsers().get(j).getUserId()));
-                    arr.put(objectUs);
-                }
-                JSONObject object = new JSONObject();
-                object.put("arrUsersId",arr);
-
-                pairsTasks.add(new BasicNameValuePair("users", object.toString()));
-            }
-
-            String jsonStr = null;
-            jsonStr = sh.makeServiceCall(url, ServiceServerHandler.POST
-                    , pairsTasks, srProjectApplication.getUser().getUserApiKey() );
-
-            if(jsonStr != null){
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    String error = null;
-
-                    error = jsonObj.getString(ServiceServerHandler.TAG_ERROR);
-
-
-                    if (error == "true") {
-                        mError = jsonObj.getString("message");
-                    }else{
-                        int taskId = Integer.parseInt(jsonObj.getString("task_id"));
-                        mTaskWithUsersSetted.setIdTask(taskId);
-                    }
-
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        }
-
-        private void updateTaskOnServer(String url, TaskWithUsersSetted mTaskWithUsersSetted){
-            try {
-                List<NameValuePair> pairsTasks = new ArrayList<NameValuePair>();
-                ServiceServerHandler sh = new ServiceServerHandler();
-                pairsTasks.add(new BasicNameValuePair("text", mTaskWithUsersSetted.getTaskText()));
-                pairsTasks.add(new BasicNameValuePair("status", Integer.toString(mStatus)));
-                pairsTasks.add(new BasicNameValuePair("task_id", Integer.toString(mTaskWithUsersSetted.getTask().getId())));
-
-                if(mTaskWithUsersSetted.getListUsers().size() > 0){
-                    JSONArray arr = new JSONArray();
-                    for (int j = 0; j < mTaskWithUsersSetted.getListUsers().size(); ++j){
-                        JSONObject objectUs = new JSONObject();
-                        objectUs.put("id",Integer.toString(mTaskWithUsersSetted.getListUsers().get(j).getUserId()));
-                        arr.put(objectUs);
-                    }
-                    JSONObject object = new JSONObject();
-                    object.put("arrUsersId",arr);
-
-                    pairsTasks.add(new BasicNameValuePair("users", object.toString()));
-                }
-
-                String jsonStr = null;
-                jsonStr = sh.makeServiceCall(url,ServiceServerHandler.PUT
-                        , pairsTasks, srProjectApplication.getUser().getUserApiKey() );
-
-                if(jsonStr != null){
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    String error = null;
-
-                    error = jsonObj.getString(ServiceServerHandler.TAG_ERROR);
-
-
-                    if (error == "True") {
-                        mError = jsonObj.getString("message");
-
-                    }
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
 
 
@@ -718,10 +651,10 @@ public class EditProjectActivity extends NavigationDrawerActivity {
             showProgress(false);
 
             if (success) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Successes edited!", Toast.LENGTH_SHORT);
-                toast.show();
-                Intent newIntent = new Intent(EditProjectActivity.this, MainActivity.class);
+              /*  Toast toast = Toast.makeText(getApplicationContext(),
+                        "Successes added!", Toast.LENGTH_SHORT);
+                toast.show();*/
+                Intent newIntent = new Intent(CreateProjectActivity.this, MainActivity.class);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
@@ -734,57 +667,7 @@ public class EditProjectActivity extends NavigationDrawerActivity {
         }
     }
 
-    public class DeleteExistingProjectTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final TaskWithUsersSetted mTaskWithUsersSetted;
-
-        ///
-        private String mError;
-        ///
-
-        DeleteExistingProjectTask(TaskWithUsersSetted taskWithUsersSetted) {
-            mTaskWithUsersSetted = taskWithUsersSetted;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            SRProjectApplication srProjectApplication = (SRProjectApplication)getApplicationContext();
-            ServiceServerHandler sh = new ServiceServerHandler();
-
-            String jsonStr = sh.makeServiceCall(UrlHolder.getTasksUrlById(mTaskWithUsersSetted.getTask().getId()
-
-            ), ServiceServerHandler.DELETE, null, srProjectApplication.getUser().getUserApiKey() );
-
-            if (jsonStr != null) {
-
-                JSONObject jsonObj = null;
-                String error = "";
-                try {
-                    jsonObj = new JSONObject(jsonStr);
-                    error = jsonObj.getString(ServiceServerHandler.TAG_ERROR);
-
-
-                    return true;
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            return false;
-        }
-
-
-        @Override
-        protected void onPostExecute ( final Boolean success){
-
-
-
-
-        }
-    }
 
 
 

@@ -1,4 +1,4 @@
-package denver.srprojectapp;
+package denver.srprojectapp.objects;
 
 import android.content.Intent;
 
@@ -17,7 +17,7 @@ public class Task {
     private int createdById;
     private int projectId;
 
-    Task(int id, String text, int status, int createdById, int projectId){
+    public Task(int id, String text, int status, int createdById, int projectId){
         this.id = id;
         this.text = text;
         if (status == STATUS_DONE || status == STATUS_UNDONE){

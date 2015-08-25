@@ -1,9 +1,8 @@
-package denver.srprojectapp;
+package denver.srprojectapp.activitys;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -13,12 +12,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -26,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +33,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import denver.srprojectapp.service.InternetConnectionChecker;
+import denver.srprojectapp.R;
+import denver.srprojectapp.service.SRProjectApplication;
+import denver.srprojectapp.service.ServiceServerHandler;
+import denver.srprojectapp.service.UrlHolder;
+import denver.srprojectapp.objects.User;
+import denver.srprojectapp.service.UserRights;
 
 
 public class RegistrationActivity extends NavigationDrawerActivity implements LoaderManager.LoaderCallbacks<Cursor> {

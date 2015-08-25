@@ -1,12 +1,10 @@
-package denver.srprojectapp;
+package denver.srprojectapp.activitys;
 
 
     import android.animation.Animator;
     import android.animation.AnimatorListenerAdapter;
     import android.annotation.TargetApi;
-    import android.app.Activity;
     import android.app.LoaderManager.LoaderCallbacks;
-    import android.content.ContentResolver;
     import android.content.CursorLoader;
     import android.content.Intent;
     import android.content.Loader;
@@ -20,7 +18,6 @@ package denver.srprojectapp;
     import android.text.TextUtils;
     import android.view.KeyEvent;
     import android.view.View;
-    import android.view.View.OnClickListener;
     import android.view.inputmethod.EditorInfo;
     import android.widget.ArrayAdapter;
     import android.widget.AutoCompleteTextView;
@@ -37,8 +34,15 @@ package denver.srprojectapp;
     import java.util.ArrayList;
     import java.util.List;
 
+    import denver.srprojectapp.service.InternetConnectionChecker;
+    import denver.srprojectapp.R;
+    import denver.srprojectapp.service.SRProjectApplication;
+    import denver.srprojectapp.service.ServiceServerHandler;
+    import denver.srprojectapp.service.UrlHolder;
+    import denver.srprojectapp.objects.User;
 
-    /**
+
+/**
      * A login screen that offers login via email/password.
      */
     public class LoginActivity extends NavigationDrawerActivity implements LoaderCallbacks<Cursor> {

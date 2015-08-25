@@ -1,15 +1,16 @@
-package denver.srprojectapp;
+package denver.srprojectapp.services;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import denver.srprojectapp.service.InternetConnectionChecker;
+import denver.srprojectapp.R;
+import denver.srprojectapp.service.SRProjectApplication;
 
 
 public class DelayedSendingToServerIntentService extends IntentService {

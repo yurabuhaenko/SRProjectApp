@@ -1,4 +1,6 @@
-package denver.srprojectapp;
+package denver.srprojectapp.objects;
+
+import denver.srprojectapp.service.UserRights;
 
 /**
  * Created by Denver on 11.07.2015.
@@ -11,7 +13,7 @@ public class User extends GeneralUser{
    // private String name;
     private UserRights rights;
 
-    User(int id, String email, String apiKey, String name, String rights){
+    public User(int id, String email, String apiKey, String name, String rights){
         super(id,name);
        // this.id = id;
         this.email = email;

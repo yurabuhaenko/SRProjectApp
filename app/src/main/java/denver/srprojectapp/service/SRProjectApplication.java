@@ -1,11 +1,16 @@
-package denver.srprojectapp;
+package denver.srprojectapp.service;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import denver.srprojectapp.objects.GeneralUser;
+import denver.srprojectapp.objects.Project;
+import denver.srprojectapp.objects.ProjectTask;
+import denver.srprojectapp.objects.User;
 
 /**
  * Created by Denver on 11.07.2015.
@@ -18,6 +23,8 @@ public class SRProjectApplication extends Application {
     private int intervalToResyncTask;
     private int intervalToCheckUpdateTask;
 
+
+    private int versionOfUsersTasks;
 
     ///////////////////////////
     ///// USER FIELDS
@@ -36,16 +43,16 @@ public class SRProjectApplication extends Application {
         loadIntervalToResyncTask();
         loadIntervalToCheckUpdateTask();
 
+        projectList = new ArrayList<>();
+        generalUserList = new ArrayList<>();
+        userTasks = new ArrayList<>();
+
         if (checkIsSavedUser() == true){
             user = loadUser();
         }
         if (checkIsSavedUserProjectTasks() == true){
-            userTasks = loadUserProjectTasks();
+            loadUserProjectTasks();
         }
-
-        projectList = new ArrayList<>();
-        generalUserList = new ArrayList<>();
-        userTasks = new ArrayList<>();
 
     }
 
@@ -96,7 +103,8 @@ public class SRProjectApplication extends Application {
         }
     }
 
-
+    public int getVersionOfUsersTasks(){return  versionOfUsersTasks;}
+    public void setVersionOfUsersTasks(int version){this.versionOfUsersTasks = version;}
 
 
     public void setGeneralUserList(List<GeneralUser> generalUserList){
@@ -139,6 +147,7 @@ public class SRProjectApplication extends Application {
     private static final String PREFERENCES_USER = "userPref";
     private static final String PREFERENCES_USER_TASK_PROJECT = "userProjectTaskPref";
     private static final String NUMBER_SAVED_PROJECT_TASKS = "numbProjectTasks";
+    private static final String SAVED_VERSION_USER_TASK = "versionUserTask";
 
     private static final String SAVED_USER_ID = "userId";
     private static final String SAVED_USER_EMAIL = "userEmail";
@@ -206,30 +215,32 @@ public class SRProjectApplication extends Application {
 
 
     public void saveUserProjectTasks(List<ProjectTask> prTasks) {
+        Log.d("onSRApplicationDenv", "start saving");
+
         sPref = getSharedPreferences(PREFERENCES_USER_TASK_PROJECT, MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-
         ed.putString(NUMBER_SAVED_PROJECT_TASKS, Integer.toString(prTasks.size()));
+        ed.putString(SAVED_VERSION_USER_TASK, Integer.toString(versionOfUsersTasks));
 
-        for (int i = 1; i <= prTasks.size(); ++i) {
+        for (int i = 0; i < prTasks.size(); ++i) {
             ed.putString(SAVED_TASK_ID + Integer.toString(i), Integer.toString(prTasks.get(i).getId()));
             ed.putString(SAVED_TASK_TEXT + Integer.toString(i), prTasks.get(i).getText());
             ed.putString(SAVED_TASK_STATUS + Integer.toString(i), Integer.toString(prTasks.get(i).getStatus()));
             ed.putString(SAVED_TASK_PROJECT_ID + Integer.toString(i), Integer.toString(prTasks.get(i).getProjectId()));
             ed.putString(SAVED_PROJECT_TITLE + Integer.toString(i), prTasks.get(i).getProjectTitle());
         }
-
+        Log.d("onSRApplicationDenv", "successfully saved");
         ed.commit();
     }
 
 
-    public List<ProjectTask> loadUserProjectTasks() {
+    public void loadUserProjectTasks() {
         sPref = getSharedPreferences(PREFERENCES_USER_TASK_PROJECT, MODE_PRIVATE);
 
-        List<ProjectTask> prTasks = new ArrayList<ProjectTask>();
-
         int numOfSavedTasks = Integer.parseInt(sPref.getString(NUMBER_SAVED_PROJECT_TASKS, ""));
-        for (int i = 1; i <= numOfSavedTasks; ++i) {
+        this.versionOfUsersTasks = Integer.parseInt(sPref.getString(SAVED_VERSION_USER_TASK, "0"));
+
+        for (int i = 0; i < numOfSavedTasks; ++i) {
             int id = Integer.parseInt(sPref.getString(SAVED_TASK_ID + Integer.toString(i), ""));
             String text = sPref.getString(SAVED_TASK_TEXT + Integer.toString(i), "");
             int status = Integer.parseInt(sPref.getString(SAVED_TASK_STATUS + Integer.toString(i), ""));
@@ -237,10 +248,10 @@ public class SRProjectApplication extends Application {
             String title = sPref.getString(SAVED_PROJECT_TITLE + Integer.toString(i), "");
 
             ProjectTask t = new ProjectTask(id, text, status, 0, projectId, title);
-            prTasks.add(t);
+            userTasks.add(t);
         }
 
-        return prTasks;
+
     }
 
     public boolean checkIsSavedUserProjectTasks() {
@@ -257,6 +268,23 @@ public class SRProjectApplication extends Application {
         }
     }
 
+    public void deleteUserProjectTasks(){
+        sPref = getSharedPreferences(PREFERENCES_USER_TASK_PROJECT, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putString(NUMBER_SAVED_PROJECT_TASKS, Integer.toString(0));
+        ed.putString(SAVED_VERSION_USER_TASK, Integer.toString(0));
+
+        int numOfSavedTasks = Integer.parseInt(sPref.getString(NUMBER_SAVED_PROJECT_TASKS, ""));
+        for (int i = 0; i < numOfSavedTasks; ++i) {
+            ed.putString(SAVED_TASK_ID + Integer.toString(i), "");
+            ed.putString(SAVED_TASK_TEXT + Integer.toString(i), "");
+            ed.putString(SAVED_TASK_STATUS + Integer.toString(i), "");
+            ed.putString(SAVED_TASK_PROJECT_ID + Integer.toString(i), "");
+            ed.putString(SAVED_PROJECT_TITLE + Integer.toString(i),"");
+        }
+        Log.d("onSRApplicationDenv", "successfully deleted");
+        ed.commit();
+    }
 
 ////////////////////////////////////////
 ///////////////SYSTEM preferences saver/

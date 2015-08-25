@@ -1,4 +1,4 @@
-package denver.srprojectapp;
+package denver.srprojectapp.objects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +10,12 @@ public class TaskWithUsersSetted{
     Task task;
     List<GeneralUser> listUsers;
 
-    TaskWithUsersSetted(){
+    public TaskWithUsersSetted(){
         task = new Task(0,"",0,0,0);
         listUsers = new ArrayList<>();
     }
 
-    TaskWithUsersSetted(Task task, List<GeneralUser> listUsers){
+    public TaskWithUsersSetted(Task task, List<GeneralUser> listUsers){
         this.task = new Task(task.getId(), task.getText(), task.getStatus(), task.getCreatedById(),task.getProjectId());
         this.listUsers = new ArrayList<>(listUsers);
     }
